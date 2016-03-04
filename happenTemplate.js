@@ -17,11 +17,14 @@ var library = (function() {
 		Time: (function() {
 		  return {
 	  	    WithSeconds: function(){
-                  var date = new Date;
+                  var date = new Date();
                   var time = date.toLocaleTimeString();
                   return String(time);
               },
-	   	    WithOutSeconds: function() {}
+	   	    WithOutSeconds: function() {
+                return new Date().toLocaleTimeString().replace(/:\d\d /, ' ');
+                 
+               }
 		  }
 		})(),
 		MDY: (function(){
@@ -36,46 +39,9 @@ var library = (function() {
                 var month = date.getMonth();
                 var day = date.getDate();
                 var year = date.getFullYear();
-                // if(month == 0) {
-                //     return String('January');
-                // }
-                // if(month == 1) {
-                //     return String('Febuary');
-                // }
-                if(month == 2) {
-                    return String('March', + day, + year);
-                }
-                
-                // if(month == 3) {
-                //     return String('April');
-                // }
-                // if(month == 4) {
-                //     return String('May');
-                // }
-                // if(month == 5) {
-                //     return String('June');
-                // }
-                // if(month == 6) {
-                //     return String('July');
-                // }
-                // if(month == 7) {
-                //     return String('August');
-                // }
-                // if(month == 8) {
-                //     return String('September');
-                // }
-                // if(month == 9) {
-                //     return String('October');
-                // }
-                // if(month == 10) {
-                //     return String('November');
-                // }
-                // if(month == 11) {
-                //     return String('December');
-                // }
-                // else {
-                // return String(month);
-                // }
+                var name = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July',
+                'August', 'September', 'October', 'November', 'December'];
+                return String(name[month] + ' ' + day + ',' + ' ' + year);
             }
                 
             
@@ -131,38 +97,8 @@ var library = (function() {
 			TwelveHour: function() {
                 var date = new Date();
                 var hr = date.getHours();
-                if(hr == 13) {
-                    return String(1);
-                }
-                if(hr == 14) {
-                    return String(2);
-                }
-                if(hr == 15) {
-                    return String(3);
-                }
-                if(hr == 16) {
-                    return String(4);
-                }
-                if(hr == 17) {
-                    return String(5);
-                }
-                if(hr == 18) {
-                    return String(6);
-                }
-                if(hr == 19) {
-                    return String(7);
-                }
-                if(hr == 20) {
-                    return String(8);
-                }
-                if(hr == 21) {
-                    return String(9);
-                }
-                if(hr == 22) {
-                    return String(10);
-                }
-                if(hr == 23) {
-                    return String(11);
+                if(hr > 12){
+                    return String(hr - 12);
                 }
                 if(hr == 0) {
                     return String(12);
@@ -202,86 +138,31 @@ var library = (function() {
 			DayOfWeek: function(){
                 var date = new Date;
                 var week = date.getDay();
-                if(week == 0) {
-                    return String('Sunday');
-                }
-                if(week == 1) {
-                    return String('Monday');
-                }
-                if(week == 2) {
-                    return String('Tuesday');
-                }
-                if(week == 3) {
-                    return String('Wednesday');
-                }
-                if(week == 4) {
-                    return String('Thursday');
-                }
-                if(week == 5) {
-                    return String('Friday');
-                }
-                if(week == 6) {
-                    return String('Saturday');
-                }
-                else {
-                return String(week);
-                }
+                var weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                    return String(weekDays[week]);
+                
             },
 			AbrDayOfWeek: function(){
                 var date = new Date;
                 var week = date.getDay();
-                if(week == 0) {
-                    return String('Sun');
-                }
-                if(week == 1) {
-                    return String('Mon');
-                }
-                if(week == 2) {
-                    return String('Tue');
-                }
-                if(week == 3) {
-                    return String('Wed');
-                }
-                if(week == 4) {
-                    return String('Thur');
-                }
-                if(week == 5) {
-                    return String('Fri');
-                }
-                if(week == 6) {
-                    return String('Sat');
-                }
-                else {
-                return String(week);
-                }
+                var weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                    return String(weekDays[week]);
+                
             },
 			FirstTwoOfWeek: function(){var date = new Date;
                 var week = date.getDay();
-                if(week == 0) {
-                    return String('Su');
-                }
-                if(week == 1) {
-                    return String('Mo');
-                }
-                if(week == 2) {
-                    return String('Tu');
-                }
-                if(week == 3) {
-                    return String('We');
-                }
-                if(week == 4) {
-                    return String('Th');
-                }
-                if(week == 5) {
-                    return String('Fr');
-                }
-                if(week == 6) {
-                    return String('Sa');
-                }
-                else {
-                return String(week);
-                }},
-			WeekOfYear: function(){}
+                var weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+                return String(weekDays[week]);
+                
+                },
+			WeekOfYear: function(){
+                var now = new Date();
+                var start = new Date(now.getFullYear(), 0, 0);
+                var diff = now - start;
+                var oneWeek = 1000 * 60 * 60 * 24 * 7;
+                var day = Math.floor(diff / oneWeek);
+                return day.toString();
+            }
 		}
 	})(),
 	Month: (function(){
@@ -306,7 +187,7 @@ var library = (function() {
                             return String(suffix + 'rd');
                         }
                         else{
-                            return String(suffix);
+                            return String(suffix + 'th');
                         } 
                     },
 					DateDblDigit: function(){
@@ -340,88 +221,18 @@ var library = (function() {
 			AbrOfCurrentMonth: function(){
                 var date = new Date;
                 var month = date.getMonth();
-                if(month == 0) {
-                    return String('Jan');
-                }
-                if(month == 1) {
-                    return String('Feb');
-                }
-                if(month == 2) {
-                    return String('Mar');
-                }
-                if(month == 3) {
-                    return String('Apr');
-                }
-                if(month == 4) {
-                    return String('May');
-                }
-                if(month == 5) {
-                    return String('Jun');
-                }
-                if(month == 6) {
-                    return String('Jul');
-                }
-                if(month == 7) {
-                    return String('Aug');
-                }
-                if(month == 8) {
-                    return String('Sept');
-                }
-                if(month == 9) {
-                    return String('Oct');
-                }
-                if(month == 10) {
-                    return String('Nov');
-                }
-                if(month == 11) {
-                    return String('Dec');
-                }
-                else {
-                return String(month);
-                }
+                var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+                'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+                return String(months[month]);
+               
             },
 			CurrentMonth: function(){
                 var date = new Date;
                 var month = date.getMonth();
-                if(month == 0) {
-                    return String('January');
-                }
-                if(month == 1) {
-                    return String('Febuary');
-                }
-                if(month == 2) {
-                    return String('March');
-                }
-                if(month == 3) {
-                    return String('April');
-                }
-                if(month == 4) {
-                    return String('May');
-                }
-                if(month == 5) {
-                    return String('June');
-                }
-                if(month == 6) {
-                    return String('July');
-                }
-                if(month == 7) {
-                    return String('August');
-                }
-                if(month == 8) {
-                    return String('September');
-                }
-                if(month == 9) {
-                    return String('October');
-                }
-                if(month == 10) {
-                    return String('November');
-                }
-                if(month == 11) {
-                    return String('December');
-                }
-                else {
-                return String(month);
-                }
+                var months = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July',
+                'August', 'September', 'October', 'November', 'December'];
+                return String(months[month]);
+               
             }
 		}
 	})(),
@@ -429,8 +240,35 @@ var library = (function() {
 		return {
 			DayOfYear: (function(){
 				return {
-					Numeral: function(){},
-					Ordinal: function(){}
+					Numeral: function(){
+                        var now = new Date();
+                        var start = new Date(now.getFullYear(), 0, 0);
+                        var diff = now - start;
+                        var oneDay = 1000 * 60 * 60 * 24;
+                        var day = Math.floor(diff / oneDay);
+                        return day.toString();
+                    },
+					Ordinal: function(){
+                        var now = new Date();
+                        var start = new Date(now.getFullYear(), 0, 0);
+                        var diff = now - start;
+                        var oneDay = 1000 * 60 * 60 * 24;
+                        var day = Math.floor(diff / oneDay);
+                        
+                        if(([1, 21, 31, 41, 51, 61, 71, 81, 91, 101, 121, 131, 141, 151, 161, 171, 181, 191, 201, 221, 231, 241, 251, 261, 271, 281, 291, 301, 321, 331, 341, 351, 361]).includes(day)){
+                            return String(day + 'st');
+                        }
+                        if(([2, 22, 32, 42, 52, 62 ,72, 82, 92, 102, 122, 132, 142, 152, 162, 172, 182, 192, 202, 222, 232, 242, 252, 262, 271, 281, 291, 302, 322, 332, 342, 352, 362]).includes(day)){
+                            return String(day + 'nd');
+                        }
+                        if(([3, 23, 33, 43, 53, 63 ,73, 83, 93, 103, 123, 133, 143, 153, 163, 173, 183, 193, 203, 223, 233, 243, 253, 263, 273, 283, 293, 303, 323, 333, 343, 353, 363]).includes(day)){
+                            return String(day + 'rd');
+                        }
+                        else{
+                            return String(day + 'th');
+                        }
+                        return day.toString();
+                    }
 				}
 			})(),
 			YearFull: function(){
@@ -451,37 +289,25 @@ var library = (function() {
 		}
 	})(),
 	Defaults: function(){
+       function dates(x) {
+            if(x < 10){
+                return String('0' + x);      
+            }
+            else{
+                return x;
+            };
+        };
         var date = new Date();
-        var def = date.toISOString();
-        return String(def);
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var hr = date.getHours();
+        var min = date.getMinutes();
+        var secs = date.getSeconds();
+            return String(year + '-' + dates(month) + '-' + dates(day) + 'T' + dates(hr) + ':' + dates(min) + ':' + dates(secs));
+     
     }
   }
 })();
 
-// function daysInFebruary(year) {
-//     if(year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) {
-//         // Leap year
-//         return 29;
-//     } else {
-//         // Not a leap year
-//         return 28;
-//     }
-// }
 
-// function dateToDay(date) {
-//     var feb = daysInFebruary(date.getFullYear());
-//     var aggregateMonths = [0, // January
-//                            31, // February
-//                            31 + feb, // March
-//                            31 + feb + 31, // April
-//                            31 + feb + 31 + 30, // May
-//                            31 + feb + 31 + 30 + 31, // June
-//                            31 + feb + 31 + 30 + 31 + 30, // July
-//                            31 + feb + 31 + 30 + 31 + 30 + 31, // August
-//                            31 + feb + 31 + 30 + 31 + 30 + 31 + 31, // September
-//                            31 + feb + 31 + 30 + 31 + 30 + 31 + 31 + 30, // October
-//                            31 + feb + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31, // November
-//                            31 + feb + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30, // December
-//                          ];
-//     return aggregateMonths[date.getMonth()] + date.getDate();
-// }
